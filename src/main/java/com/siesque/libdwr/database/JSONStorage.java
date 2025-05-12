@@ -17,9 +17,11 @@ public class JSONStorage implements StorageProvider {
 
 
     public JSONStorage(Path path) throws IOException {
-        this.STORAGE_FILE = path;
+        String workingDir = System.getProperty("user.dir");
+        STORAGE_FILE = Path.of(workingDir).resolve(path);
 
         if (!Files.exists(STORAGE_FILE)) {
+            Files.createDirectories(STORAGE_FILE.getParent());
             Files.createFile(STORAGE_FILE);
             saveData(new ArrayList<>());
         } else {
