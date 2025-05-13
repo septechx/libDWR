@@ -29,13 +29,13 @@ public class JSONStorage implements StorageProvider {
                 saveData(new ArrayList<>());
             }
         }
-
     }
 
     @Override
     public <TData> void saveData(TData data) throws IOException {
-        FileWriter writer = new FileWriter(STORAGE_FILE.toFile());
-        GSON.toJson(data, writer);
+        try (FileWriter writer = new FileWriter(STORAGE_FILE.toFile())) {
+            GSON.toJson(data, writer);
+        }
     }
 
     @Override
@@ -44,8 +44,8 @@ public class JSONStorage implements StorageProvider {
             throw new RuntimeException("File not found: " + STORAGE_FILE);
         }
 
-        FileReader reader = new FileReader(STORAGE_FILE.toFile());
-        return GSON.fromJson(reader, typeOfData);
-
+        try (FileReader reader = new FileReader(STORAGE_FILE.toFile())) {
+            return GSON.fromJson(reader, typeOfData);
+        }
     }
 }
