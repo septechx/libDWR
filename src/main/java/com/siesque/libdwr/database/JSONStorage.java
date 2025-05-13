@@ -35,6 +35,7 @@ public class JSONStorage implements StorageProvider {
     public <TData> void saveData(TData data) throws IOException {
         try (FileWriter writer = new FileWriter(STORAGE_FILE.toFile())) {
             GSON.toJson(data, writer);
+            writer.flush();
         }
     }
 
